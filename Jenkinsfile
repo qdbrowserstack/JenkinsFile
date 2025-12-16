@@ -12,7 +12,7 @@ pipeline {
     }
 
     environment {
-        WORKDIR = 'wdio_qei/wdio'
+        WORKDIR = 'wdio_qei/wdio/wdio'
     }
 
     stages {
@@ -20,10 +20,10 @@ pipeline {
         stage('Checkout Repo') {
             steps {
                 sh '''
-                  if [ ! -d "$WORKDIR" ]; then
-                    git clone https://github.com/qdbrowserstack/wdio_qei.git $WORKDIR
+                  if [ ! -d "wdio_qei/wdio" ]; then
+                    git clone https://github.com/qdbrowserstack/wdio_qei.git wdio_qei/wdio
                   fi
-                  cd $WORKDIR
+                  cd wdio_qei/wdio
                   git checkout main
                   git pull origin main
                 '''
