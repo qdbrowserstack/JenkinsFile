@@ -100,6 +100,7 @@ pipeline {
             archiveArtifacts artifacts: '**/reports/junit/**/*.xml',
                              allowEmptyArchive: true,
                              fingerprint: true
+            cleanWs()
         }
     }
 }
