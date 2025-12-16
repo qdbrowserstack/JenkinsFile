@@ -12,7 +12,7 @@ pipeline {
     }
 
     environment {
-        WORKDIR = 'wdio_qei/wdio/wdio'
+        WORKDIR = 'wdio_qei/wdio'
     }
 
     stages {
@@ -20,10 +20,10 @@ pipeline {
         stage('Checkout Repo') {
             steps {
                 sh '''
-                  if [ ! -d "wdio_qei/wdio" ]; then
-                    git clone https://github.com/qdbrowserstack/wdio_qei.git wdio_qei/wdio
+                  if [ ! -d "$WORKDIR" ]; then
+                    git clone https://github.com/qdbrowserstack/wdio_qei.git $WORKDIR
                   fi
-                  cd wdio_qei/wdio
+                  cd $WORKDIR
                   git checkout main
                   git pull origin main
                 '''
@@ -95,12 +95,20 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            archiveArtifacts artifacts: '**/reports/junit/**/*.xml',
-                             allowEmptyArchive: true,
-                             fingerprint: true
-            cleanWs()
-        }
-    }
+  post {
+      always {
+          script {
+              if (fileExists('reports/junit')) {
+                  junit testResults: '**/reports/junit/**/*.xml',
+                        allowEmptyResults: true
+
+                  archiveArtifacts artifacts: '**/reports/junit/**/*.xml',
+                                  allowEmptyArchive: true,
+                                  fingerprint: true
+              } else {
+                  echo 'No JUnit reports found, skipping publish step'
+              }
+          }
+      }
+  }
 }
