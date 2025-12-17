@@ -107,7 +107,7 @@ pipeline {
                 allowEmptyArchive: true,
                 fingerprint: true
             )
-            cleanWs(patterns: [[pattern: 'reports/**', type: 'INCLUDE']])
+            cleanWs()
         }
     }
 
