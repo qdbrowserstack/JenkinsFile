@@ -94,18 +94,19 @@ pipeline {
 
     post {
         always {
-            script {
-                if (fileExists("${WORKDIR}/reports/junit")) {
-                    junit testResults: "${WORKDIR}/reports/junit/**/*.xml",
-                          allowEmptyResults: true
-
-                    archiveArtifacts artifacts: "${WORKDIR}/reports/junit/**/*.xml",
-                                      allowEmptyArchive: true,
-                                      fingerprint: true
-                } else {
-                    echo 'No JUnit reports found, skipping publish step'
-                }
-            }
+            echo "Publishing JUnit test results..."
+    
+            junit(
+                testResults: 'wdio_qei/wdio/wdio/reports/junit/**/*.xml',
+                allowEmptyResults: true,
+                keepLongStdio: true
+            )
+    
+            archiveArtifacts(
+                artifacts: 'wdio_qei/wdio/wdio/reports/junit/**/*.xml',
+                allowEmptyArchive: true,
+                fingerprint: true
+            )
         }
     }
 }
