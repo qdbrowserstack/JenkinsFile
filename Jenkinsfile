@@ -107,6 +107,7 @@ pipeline {
                 allowEmptyArchive: true,
                 fingerprint: true
             )
+            cleanWs()
         }
     }
 
