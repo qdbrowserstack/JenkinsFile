@@ -94,19 +94,20 @@ pipeline {
 
     post {
         always {
-            echo "Publishing JUnit test results..."
+            echo "Publishing test results & archiving artifacts"
     
             junit(
-                testResults: 'wdio_qei/wdio/wdio/reports/junit/**/*.xml',
+                testResults: '**/reports/junit/**/*.xml',
                 allowEmptyResults: true,
                 keepLongStdio: true
             )
     
             archiveArtifacts(
-                artifacts: 'wdio_qei/wdio/wdio/reports/junit/**/*.xml',
+                artifacts: '**/reports/junit/**/*.xml',
                 allowEmptyArchive: true,
                 fingerprint: true
             )
         }
     }
+
 }
